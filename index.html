@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Day 5 Lab Assignments</title>
+</head>
+
+<body>
+
+<h1>Day 5 Lab Assignments</h1>
+
+<h2>1. Tip of the Day</h2>
+<p id="tip"></p>
+
+<hr>
+
+<h2>2. Current Date and Time</h2>
+<button onclick="showDateTime()">Show Date and Time</button>
+<p id="dateTime"></p>
+
+<hr>
+
+<h2>3. Email Validation</h2>
+<button onclick="checkEmail()">Enter Email</button>
+<p id="emailResult"></p>
+
+<hr>
+
+<h2>4. Full Name and Email Validation</h2>
+<button onclick="checkUserData()">Enter Your Data</button>
+<p id="dataResult"></p>
+
+<hr>
+
+<h2>5. Full Name Using Pattern</h2>
+
+<input
+    id="fullName"
+    placeholder="Enter Full Name"
+    pattern="[A-Za-z]{3,}(?: [A-Za-z]{3,})+"
+    title="Enter at least two names, each at least 3 letters"
+>
+
+<button onclick="checkNamePattern()">Check Name</button>
+<p id="nameResult"></p>
+
+<hr>
+
+<h2>6. Student Grades</h2>
+<p id="gradesResult"></p>
+
+<hr>
+
+<h2>7. Students Objects</h2>
+<p id="studentsResult"></p>
+
+<hr>
+
+<h2>8. Birth Date</h2>
+<button onclick="showDate()">Enter Birth Date</button>
+<p id="birthResult"></p>
+
+<hr>
+
+<h2>9. Error Handling</h2>
+<button onclick="testError()">Test Error</button>
+<p id="errorResult"></p>
+
+
+<script>
+
+// 1. Tip of the Day
+
+let tips = [
+    "Use let and const to declare variables.",
+    "Use meaningful names for variables.",
+    "Always indent your code.",
+    "Use functions to organize your code.",
+    "Use arrays to store multiple values.",
+    "Use objects to store related data.",
+    "Use console.log() to test your code.",
+    "Use comments to explain your code.",
+    "Learn how to use array methods.",
+    "Practice JavaScript every day."
+];
+
+let randomIndex = Math.floor(Math.random() * tips.length);
+
+document.getElementById("tip").innerHTML = tips[randomIndex];
+
+
+// 2. Current Date and Time
+
+function showDateTime() {
+
+    let now = new Date();
+
+    document.getElementById("dateTime").innerHTML =
+        now.toLocaleString();
+}
+
+
+// 3. Email Validation
+// Using string functions only - No RegExp
+
+function checkEmail() {
+
+    let email;
+
+    while (true) {
+
+        email = prompt("Enter your Email:");
+
+        if (email === null) {
+            return;
+        }
+
+        let atIndex = email.indexOf("@");
+
+        if (
+            atIndex > 0 &&
+            atIndex < email.length - 1
+        ) {
+            document.getElementById("emailResult").innerHTML =
+                "Valid Email: " + email;
+            break;
+        }
+
+        alert("Invalid Email. Email must contain @ and @ cannot be first or last.");
+    }
+}
+
+
+// 4. Full Name and Email Validation
+// Using Regular Expression
+
+function checkUserData() {
+
+    let name;
+    let email;
+
+    let namePattern = /^[A-Za-z]{3,}(?: [A-Za-z]{3,})+$/;
+
+    let emailPattern =
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|edu|org)\.eg$/;
+
+    while (true) {
+
+        name = prompt("Enter your Full Name:");
+
+        if (name === null) {
+            return;
+        }
+
+        if (namePattern.test(name)) {
+            break;
+        }
+
+        alert("Wrong Full Name Format.");
+    }
+
+
+    while (true) {
+
+        email = prompt(
+            "Enter your Email (example: name@domain.com.eg):"
+        );
+
+        if (email === null) {
+            return;
+        }
+
+        if (emailPattern.test(email)) {
+            break;
+        }
+
+        alert("Wrong Email Format.");
+    }
+
+
+    document.getElementById("dataResult").innerHTML =
+        "Valid Name: " + name +
+        "<br>Valid Email: " + email;
+}
+
+
+// 5. Full Name Using Pattern
+
+function checkNamePattern() {
+
+    let input = document.getElementById("fullName");
+
+    if (input.checkValidity()) {
+
+        document.getElementById("nameResult").innerHTML =
+            "Valid Full Name";
+
+    } else {
+
+        document.getElementById("nameResult").innerHTML =
+            "Invalid Full Name";
+    }
+}
+
+
+// 6. Student Grades
+
+let grades = [60, 100, 10, 15, 85];
+
+// Sort numerically descending
+
+let sortedGrades = grades.slice().sort(function(a, b) {
+    return b - a;
+});
+
+// Find first grade less than or equal to 100
+
+let highestStudentDegree = sortedGrades.find(function(grade) {
+    return grade <= 100;
+});
+
+// Filter grades below 60
+
+let below60 = sortedGrades.filter(function(grade) {
+    return grade < 60;
+});
+
+
+document.getElementById("gradesResult").innerHTML =
+    "Sorted Descending: " + sortedGrades.join(", ") +
+    "<br>Highest Student Degree: " + highestStudentDegree +
+    "<br>Grades Below 60: " + below60.join(", ");
+
+
+// 7. Students Objects
+
+let students = [
+    { Name: "Ahmed", Degree: 95 },
+    { Name: "Mariam", Degree: 88 },
+    { Name: "Peter", Degree: 55 },
+    { Name: "Sara", Degree: 92 },
+    { Name: "John", Degree: 40 }
+];
+
+
+// a. Find student between 90 and 100
+
+let studentBetween90And100 = students.find(function(student) {
+    return student.Degree >= 90 && student.Degree <= 100;
+});
+
+
+// b. Filter students below 60
+
+let studentsBelow60 = students.filter(function(student) {
+    return student.Degree < 60;
+});
+
+
+// c. Add new student using push()
+
+students.push({
+    Name: "Ereen",
+    Degree: 96
+});
+
+let afterPush = "";
+
+for (let i in students) {
+
+    afterPush +=
+        students[i].Name +
+        " - " +
+        students[i].Degree +
+        "<br>";
+}
+
+
+// d. Remove last student using pop()
+
+students.pop();
+
+let afterPop = "";
+
+for (let i in students) {
+
+    afterPop +=
+        students[i].Name +
+        " - " +
+        students[i].Degree +
+        "<br>";
+}
+
+
+// e. Sort alphabetically by student name
+
+students.sort(function(a, b) {
+    return a.Name.localeCompare(b.Name);
+});
+
+let sortedStudents = "";
+
+for (let i in students) {
+
+    sortedStudents +=
+        students[i].Name +
+        " - " +
+        students[i].Degree +
+        "<br>";
+}
+
+
+document.getElementById("studentsResult").innerHTML =
+
+    "Student between 90 and 100: " +
+    studentBetween90And100.Name +
+    " - " +
+    studentBetween90And100.Degree +
+
+    "<br><br>Students below 60:<br>" +
+
+    studentsBelow60.map(function(student) {
+        return student.Name + " - " + student.Degree;
+    }).join("<br>") +
+
+    "<br><br>After push():<br>" +
+    afterPush +
+
+    "<br>After pop():<br>" +
+    afterPop +
+
+    "<br>Sorted Alphabetically:<br>" +
+    sortedStudents;
+
+
+// 8. Birth Date
+
+function birthDate(dateString) {
+
+    if (
+        dateString === null ||
+        dateString.length !== 10 ||
+        dateString[2] !== "-" ||
+        dateString[5] !== "-"
+    ) {
+
+        throw new Error("Wrong Date Format");
+    }
+
+
+    let day = Number(dateString.substring(0, 2));
+    let month = Number(dateString.substring(3, 5));
+    let year = Number(dateString.substring(6, 10));
+
+
+    if (
+        isNaN(day) ||
+        isNaN(month) ||
+        isNaN(year) ||
+        day < 1 ||
+        day > 31 ||
+        month < 1 ||
+        month > 12
+    ) {
+
+        throw new Error("Wrong Date Format");
+    }
+
+
+    let date = new Date(year, month - 1, day);
+
+
+    if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month - 1 ||
+        date.getDate() !== day
+    ) {
+
+        throw new Error("Invalid Date");
+    }
+
+
+    return date;
+}
+
+
+function showDate() {
+
+    let dateString = prompt(
+        "Enter your birth date in this format DD-MM-YYYY\nExample: 22-01-1999"
+    );
+
+    try {
+
+        let date = birthDate(dateString);
+
+        document.getElementById("birthResult").innerHTML =
+            "Birth Date: " +
+            date.toLocaleDateString();
+
+    } catch (error) {
+
+        alert(error.message);
+
+        document.getElementById("birthResult").innerHTML =
+            error.message;
+    }
+}
+
+
+// 9. Error Handling
+
+function testError() {
+
+    try {
+
+        throw new Error("This is a test error.");
+
+    } catch (error) {
+
+        document.getElementById("errorResult").innerHTML =
+            "Error handled successfully: " +
+            error.message;
+    }
+}
+
+
+// onError Event
+
+window.onerror = function(message, source, lineno) {
+
+    document.getElementById("errorResult").innerHTML =
+        "Error handled by onError: " +
+        message;
+
+    return true;
+};
+
+</script>
+
+</body>
+</html>
